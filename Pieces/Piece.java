@@ -8,6 +8,8 @@ public abstract class Piece {
 
     Team team;
 
+    Coords coords;
+
     public Piece(Team team, int x, int y) {
 
         this.team = team;
@@ -42,5 +44,11 @@ public abstract class Piece {
     public int getCoordY() {
 
         return this.y;
+    }
+
+    public boolean canMove(Coords coords) {
+        
+        if (coords.x % 2 == 0) return true;
+        return false;
     }
 }

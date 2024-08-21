@@ -6,14 +6,19 @@ public class Field {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BACKGROUND = "\u001B[47m";
+    public static final String ANSI_BACKGROUND_AVAILABLE_TO_MOVE = "\u001b[45m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_RED = "\u001B[31m";
 
     public static Piece[][] field = new Piece[8][8];
 
+    private static Team side = Team.WHITE;
+    private static Piece whiteKing;
+    private static Piece blackKing;
+
     public static void startField() {
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < field.length; i++) {
             field[1][i] = new Pawn(Team.BLACK, i + 1, 7);
             field[6][i] = new Pawn(Team.WHITE, i + 1, 2);
         }
@@ -26,6 +31,7 @@ public class Field {
         field[0][5] = new Bishop(Team.BLACK, 6, 8);
         field[0][3] = new King(Team.BLACK, 4, 8);
         field[0][4] = new Queen(Team.BLACK, 5, 8);
+        blackKing = field[0][3];
 
         field[7][0] = new Rook(Team.WHITE, 1, 8);
         field[7][7] = new Rook(Team.WHITE, 8, 8);
@@ -35,9 +41,12 @@ public class Field {
         field[7][5] = new Bishop(Team.WHITE, 6, 8);
         field[7][3] = new King(Team.WHITE, 4, 8);
         field[7][4] = new Queen(Team.WHITE, 5, 8);
+        whiteKing = field[7][3];
     }
 
-    public static void printField() {
+    public static void printField(Piece piece) {
+
+        String background;
 
         System.out.print("\n" + " ".repeat(55) + "  A   B   C   D   E   F   G   H");
         System.out.print("\n" + " ".repeat(55) + ANSI_BACKGROUND);
@@ -48,18 +57,40 @@ public class Field {
             }
             System.out.print("+" + ANSI_RESET + "\n" + " ".repeat(53) + (field.length - i) + " " + ANSI_BACKGROUND);
             for (int j = 0; j < field[i].length; j++) {
+
+                if (piece.canMove(new Coords(j + 1, 8 - i)))
+                    background = ANSI_BACKGROUND_AVAILABLE_TO_MOVE;
+                else
+                    background = ANSI_BACKGROUND;
+
                 if (field[i][j] != null) {
                     if (field[i][j].getTeam() == Team.BLACK)
-                        System.out.print("| " + ANSI_RED + field[i][j].getName() + ANSI_RESET + ANSI_BACKGROUND + " ");
+                        System.out.print("| " + background + ANSI_RED + field[i][j].getName() + ANSI_RESET
+                                + ANSI_BACKGROUND + " ");
                     else
-                        System.out.print("| " + ANSI_BLUE + field[i][j].getName() + ANSI_RESET + ANSI_BACKGROUND + " ");
+                        System.out.print("| " + background + ANSI_BLUE + field[i][j].getName() + ANSI_RESET
+                                + ANSI_BACKGROUND + " ");
                 } else
-                    System.out.print("|   ");
+                    System.out.print("| " + background + " " + ANSI_BACKGROUND + " ");
             }
             System.out.print("|" + ANSI_RESET + " " + (field.length - i) + ANSI_BACKGROUND);
             System.out.print(ANSI_RESET + "\n" + " ".repeat(55) + ANSI_BACKGROUND);
         }
         System.out.print("+---".repeat(8) + "+" + ANSI_RESET);
         System.out.print("\n" + " ".repeat(55) + "  A   B   C   D   E   F   G   H");
+    }
+
+    public static boolean checkKing() {
+
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                Piece enemy = field[i][j];
+                if (enemy == null)
+                    continue;
+                if (enemy.canMove(whiteKing.) {
+                    
+                }
+            }
+        }
     }
 }
